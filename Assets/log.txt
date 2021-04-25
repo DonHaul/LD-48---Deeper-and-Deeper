@@ -1,0 +1,22 @@
+pick item,✔️
+snap item to grid✔️
+place item✔️
+check for colision before placing️✔️
+item can only be placed if attached to rest of vehicle✔️
+delete item ✔️
+save vehicle - list of items + positions and rotations✔️
+think of blocks✔️
+animate tail ✔️
+make an uterus on photoshop ✔️
+
+program enemies✔️
+program win✔️
+program retry✔️
+program death and life
+program competitors
+
+program audio
+--
+program store
+program equips
+reprogram building

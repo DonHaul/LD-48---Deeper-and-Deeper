@@ -11,11 +11,35 @@ make an uterus on photoshop ✔️
 
 program enemies✔️
 program win✔️
-program retry✔️
-program death and life
-program competitors
+program retry
+program zone ✔️
+program day counter ✔️
+program death and life✔️
+sword enemy escaping through wall✔️
 
-program audio
+bosca ceoil and recordings
+-eject✔️
+-colision with wall✔️
+-background music - try bosca ceoil✔️
+-enemy shoot✔️
+-take damage✔️
+-death✔️
+-enemy death✔️
+-shoot✔️
+-speed/move?✔️
+-fecundate✔️
+program audio ✔️
+fix enemies not shooting ✔️
+add audio to enemies shooting ✔️
+add launching audio  ✔️
+program competitors  ✔️
+
+
+death animation draw✔ ️
+splashart✔ ️
+death animation program✔ ️
+
+balance game
 --
 program store
 program equips

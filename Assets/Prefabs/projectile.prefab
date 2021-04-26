@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1131969753686710486}
   - component: {fileID: 98093533425334765}
   m_Layer: 0
-  m_Name: asteroid 3
+  m_Name: projectile
   m_TagString: Death
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,6 +194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6adb412dff0ef594992a2a628d1f11d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 1
+  damage: 3
+  DeathParticle: {fileID: 5295130235238837623, guid: 681387435c9b2bb428cc9083a40bf3e1,
+    type: 3}
   seenByPlayer: 0
   destroytime: 10
 --- !u!66 &98093533425334765

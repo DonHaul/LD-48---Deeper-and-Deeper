@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyCannon : MonoBehaviour
+public class EnemyCannon : Enemy
 {
 
     public GameObject target;
@@ -38,7 +38,7 @@ public class EnemyCannon : MonoBehaviour
 
         
 
-        active = true;
+        active = false;
 
     }
 
@@ -77,7 +77,7 @@ public class EnemyCannon : MonoBehaviour
     {
         while (active)
         {
-            yield return new WaitForSeconds(interval);
+            
 
             GameObject go = Instantiate(shot[Random.Range(0, shot.Length)], spawnpoint.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360f)));
 
@@ -87,6 +87,10 @@ public class EnemyCannon : MonoBehaviour
             float y = Random.Range(vertLimits.x, vertLimits.y);
 
             go.GetComponent<Rigidbody2D>().velocity = transform.up* projectileSpeed;
+
+            yield return new WaitForSeconds(interval);
+
+            AudioManager.instance.PlaySound("enemydeath1");
 
         }
     }
@@ -105,5 +109,12 @@ public class EnemyCannon : MonoBehaviour
         {
             active = false;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

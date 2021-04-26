@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     public float initialForce=200f;
 
+    public GameObject deathParticle;
+
     public Animator screenAnim;
 
 
@@ -43,7 +45,16 @@ public class GameManager : MonoBehaviour
 
     public float life;
 
+    public int  deaths;
 
+    public float calculatedLife;
+
+
+    public Text lifeText;
+    public Image lifeBar;
+
+
+    public GameObject[] competitors;
 
     private void Awake()
     {
@@ -55,12 +66,16 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        competitors = GameObject.FindGameObjectsWithTag("Competitor");
+
         gameState = State.Edit;
 
         rb = vehicle.GetComponent<Rigidbody2D>();
 
         tryCount = PlayerPrefs.GetInt("Try", 1);
 
+        deaths = PlayerPrefs.GetInt("Deaths", 1);
 
         CounterText.text = "Day #" + tryCount.ToString();
 
@@ -68,7 +83,11 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
 
         //life increases with tries
-        life = baseLife + tryCount * 5;
+        life = baseLife + deaths * 5;
+
+        calculatedLife = life;
+
+        ChangeLife(0);
     }
 
     public void SetZone(string zone)
@@ -76,16 +95,36 @@ public class GameManager : MonoBehaviour
         ZoneText.text = zone;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    public void ChangeLife(float add)
     {
-        if (Input.GetKeyDown(KeyCode.R))
+
+       life += add;
+        lifeText.text = Mathf.RoundToInt(life).ToString();
+   lifeBar.fillAmount=life/ calculatedLife;
+
+        if(life<=0)
+        {
+            Die();
+        }
+
+}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R) )//|| (Input.GetKeyDown(KeyCode.Space) && gameState == State.Play))
         {
             StartCoroutine(FadeOut("Game"));
         }
 
+        
 
-        if (Input.GetKeyDown(KeyCode.Space))
+
+    }
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+   
+
+        if (Input.GetKeyDown(KeyCode.Space) && gameState!= State.Play)
         {
             gameState = State.Play;
             CalculateStats();
@@ -93,6 +132,19 @@ public class GameManager : MonoBehaviour
 
 
             rb.velocity = vehicle.transform.up * initialForce;
+
+            AudioManager.instance.PlaySound("launch" + Random.Range(1, 4).ToString());
+
+
+            //launch competitors
+            for (int i = 0; i < competitors.Length; i++)
+            {
+
+                competitors[i].GetComponent<Rigidbody2D>().velocity = competitors[i].transform.up * (initialForce + Random.Range(18f, 22f));
+
+                competitors[i].GetComponent<Competitor>().active = true;
+
+            }
 
             //rb.AddForce(vehicle.transform.up * initialForce, ForceMode2D.Impulse);
 
@@ -110,7 +162,17 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("Accelerating");
             }
 
-            
+            if (Input.GetKey(KeyCode.S))
+            {
+                /* if(rb.velocity.magnitude<totalSpeed)
+                 { 
+                 rb.AddForce(v);
+                 }*/
+                rb.AddForce(-vehicle.transform.up * totalSpeed*0.5f);
+                //Debug.Log("Accelerating");
+            }
+
+
 
             float rotation = Input.GetAxisRaw("Horizontal");
             if(rotation!=0)
@@ -128,6 +190,7 @@ public class GameManager : MonoBehaviour
     void CalculateStats()
     {
         Debug.Log("Processing Vehicle Stats");
+        Debug.Log(VehicleEditor.instance.VehicleParts.Count);
 
         for (int i = 0; i < VehicleEditor.instance.VehicleParts.Count; i++)
         {
@@ -144,6 +207,7 @@ public class GameManager : MonoBehaviour
                 case VehiclePart.PartType.Tail:
                     Debug.Log("Tail");
                     totalSpeed += tailSpeed;
+                    Debug.Log(totalSpeed);
                     // code block
                     break;
                 default:
@@ -158,7 +222,7 @@ public class GameManager : MonoBehaviour
 
     public void Die()
     {
-
+        Instantiate(deathParticle, vehicle.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360f)));
         StartCoroutine(FadeOut("DeathScene"));
     }
 
@@ -183,7 +247,7 @@ public class GameManager : MonoBehaviour
     //magic is done here
     void PrepareVehicle()
     {
-        Debug.Log("Processing Vehicle Stats");
+        Debug.Log("Destroying Child RigidBodies");
 
         for (int i = 0; i < VehicleEditor.instance.VehicleParts.Count; i++)
         {

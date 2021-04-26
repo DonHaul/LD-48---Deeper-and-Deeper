@@ -9,6 +9,8 @@ TagManager:
   - Win
   - Vehicle
   - Zone
+  - Competitor
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
@@ -20,7 +22,7 @@ TagManager:
   - 
   - Vehicle
   - PreviewPart
-  - 
+  - Competitor
   - 
   - 
   - 

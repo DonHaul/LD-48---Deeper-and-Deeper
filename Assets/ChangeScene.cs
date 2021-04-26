@@ -9,6 +9,8 @@ public class ChangeScene : MonoBehaviour
 {
     public Animator screenAnim;
 
+    public bool space2play = false;
+
 
     public Image black;
     // Start is called before the first frame update
@@ -21,6 +23,11 @@ public class ChangeScene : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R))
+        {
+            StartCoroutine(FadeOut("Game"));
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space) && space2play)
         {
             StartCoroutine(FadeOut("Game"));
         }

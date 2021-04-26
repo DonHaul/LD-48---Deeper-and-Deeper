@@ -24,6 +24,7 @@ public class VehicleEditor : MonoBehaviour
 
     public LayerMask mask;
 
+
     void Awake()
     {
         instance = this;
@@ -35,9 +36,37 @@ public class VehicleEditor : MonoBehaviour
         
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //Debug.Log("Collision Has Been Entered");
+
+        if (collision.gameObject.tag == "Death")
+        {
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+
+            if(enemy!=null)
+            {
+                enemy.TakeDamage(1);
+                GameManager.instance.ChangeLife(-enemy.damage);
+
+                AudioManager.instance.PlaySound("dmg" + Random.Range(1, 3).ToString());
+            }
+            else
+            {
+                Debug.LogWarning("Enemy Dound without enemy script");
+                
+            }
+        }
+       else
+        {
+            AudioManager.instance.PlaySound("col" + Random.Range(1, 4).ToString());
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        /*
         if(GameManager.instance.gameState!=GameManager.State.Edit)
         {
             if(partPreview!=null)
@@ -78,7 +107,7 @@ public class VehicleEditor : MonoBehaviour
 
             DeletePartAtPos(mousePos);
         }
-
+        
 
         //make part preview foolow mouse
         partPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -93,7 +122,7 @@ public class VehicleEditor : MonoBehaviour
            // Debug.Log("Mouse");
            // Debug.Log(partPosition);
             partPreview.transform.position = partPosition;// - anchorOffset;
-        }
+        }*/
 
     }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : Enemy
 {
     // Start is called before the first frame update
     public bool seenByPlayer;

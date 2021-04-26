@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySword : MonoBehaviour
+public class EnemySword : Enemy
 {
     public GameObject target;
     public float speed = 5f;
